@@ -1,0 +1,8 @@
+{
+  "ipwebcam": {
+    "url": "http://192.168.53.100:8080/video",
+    "location": "Camera điện thoại IP Webcam",
+    "building_id": 1,
+    "description": "Test IP Webcam"
+  }
+}
