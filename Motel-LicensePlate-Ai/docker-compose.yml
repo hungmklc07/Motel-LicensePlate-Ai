@@ -1,0 +1,104 @@
+services:
+  # Backend AI
+  backend-ai:
+    image: yonkonika/license-plate-backend-ai:latest
+    container_name: license-plate-backend-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_DB_URL=http://backend:5000/api
+      - SAVE_IMAGES=true
+      - ENABLE_CAMERA_DETECTION=true
+      - CAMERA_CONFIG=/app/config/cameras.json
+      - DEBUG_SAVE_FRAMES=true
+      - BACKEND_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImJ1aWxkaW5nX2lkIjpudWxsLCJpYXQiOjE3NDg1ODEzMDMsImV4cCI6MTc0ODY2NzcwM30.CTn99KCN1A89bWNCJZLZGIjWwXC8DDalRLHnHGP-InQ
+    volumes:
+      - ai-images:/app/images
+      - ./Backend_AI/config:/app/config
+    restart: always
+
+    networks:
+      - license-plate-network
+
+  # Backend DB - Dịch vụ quản lý dữ liệu
+  backend:
+    image: yonkonika/license-plate-backend-db:latest
+    container_name: license-plate-backend-db
+    restart: always
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASS=linh2005
+      - DB_NAME=BTL_THPTHT
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=Ngodinhlinh1@
+      - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - "5001:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - license-plate-network
+
+  # PostgreSQL Database
+  db:
+    image: docker.io/postgres:17
+    container_name: license-plate-postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=BTL_THPTHT
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=linh2005
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - license-plate-network
+
+  # Redis for high-performance data exchange
+  redis:
+    image: docker.io/redis:7
+    container_name: license-plate-redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - license-plate-network
+
+  # Frontend Admin
+  frontend-admin:
+    image: yonkonika/license-plate-frontend-admin:latest
+    container_name: license-plate-frontend-admin
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_BASE=/api
+    depends_on:
+      - backend
+      - backend-ai
+    networks:
+      - license-plate-network
+
+networks:
+  license-plate-network:
+    driver: bridge
+    external: true
+
+volumes:
+  postgres_data:
+  redis_data: 
+  ai-images:
