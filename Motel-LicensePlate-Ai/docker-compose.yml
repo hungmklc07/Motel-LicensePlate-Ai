@@ -9,14 +9,12 @@ services:
       - BACKEND_DB_URL=http://backend:5000/api
       - SAVE_IMAGES=true
       - ENABLE_CAMERA_DETECTION=true
-      - CAMERA_CONFIG=/app/config/cameras.json
       - DEBUG_SAVE_FRAMES=true
       - BACKEND_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImJ1aWxkaW5nX2lkIjpudWxsLCJpYXQiOjE3NDg1ODEzMDMsImV4cCI6MTc0ODY2NzcwM30.CTn99KCN1A89bWNCJZLZGIjWwXC8DDalRLHnHGP-InQ
     volumes:
       - ai-images:/app/images
       - ./Backend_AI/config:/app/config
     restart: always
-
     networks:
       - license-plate-network
 
@@ -46,7 +44,8 @@ services:
 
   # PostgreSQL Database
   db:
-    image: docker.io/postgres:17
+    image: yonkonika/license-plate-postgres:latest
+    pull_policy: always
     container_name: license-plate-postgres
     restart: always
     environment:
@@ -56,7 +55,7 @@ services:
       - TZ=Asia/Ho_Chi_Minh
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "5432:5432"
     healthcheck:
@@ -69,7 +68,7 @@ services:
 
   # Redis for high-performance data exchange
   redis:
-    image: docker.io/redis:7
+    image: redis:7
     container_name: license-plate-redis
     restart: always
     volumes:
@@ -96,9 +95,8 @@ services:
 networks:
   license-plate-network:
     driver: bridge
-    external: true
 
 volumes:
   postgres_data:
   redis_data: 
-  ai-images:
+  ai-images: 

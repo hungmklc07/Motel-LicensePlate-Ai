@@ -144,3 +144,25 @@ SELECT '59A-12345', 1, NOW() - INTERVAL '1 hour', '/images/exits/59A-12345_1.jpg
 -- Dữ liệu mẫu cho alerts
 INSERT INTO alerts (license_plate, camera_id, status, image_path, building_id, location)
 SELECT '80B-12345', '1', 'pending', '/images/alerts/sample1.jpg', 1, 'Cổng chính' WHERE NOT EXISTS (SELECT 1 FROM alerts WHERE license_plate = '80B-12345'); 
+
+-- Tạo bảng cameras để quản lý camera động
+CREATE TABLE IF NOT EXISTS cameras (
+    id SERIAL PRIMARY KEY,
+    camera_id VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    location VARCHAR(255),
+    building_id INTEGER REFERENCES buildings(id),
+    direction VARCHAR(10) CHECK (direction IN ('in', 'out', 'both')),
+    is_active BOOLEAN DEFAULT true,
+    config_data JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Thêm dữ liệu mẫu cho cameras
+INSERT INTO cameras (camera_id, name, url, location, building_id, direction, is_active)
+VALUES 
+    ('camera_in', 'Camera Cổng vào', 'http://192.168.53.103:8080/video', 'Cổng vào', 1, 'in', true),
+    ('camera_out', 'Camera Cổng ra', 'http://192.168.53.103:8080/video', 'Cổng ra', 1, 'out', true)
+ON CONFLICT (camera_id) DO NOTHING; 
