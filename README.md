@@ -2,8 +2,8 @@
 
 ## Mô tả dự án
 
-- [Phân tích đặc tả yêu cầu (.pdf)](./Tài liệu phân tích đặc tả yêu cầu.pdf)
-- [Thiết kế hệ thống (.pdf)](./Tài liệu thiết kế hệ thống.pdf)
+- [Phân tích đặc tả yêu cầu (.pdf)](./Tài%20liệu%20phân%20tích%20đặc%20tả%20yêu%20cầu.pdf)
+- [Thiết kế hệ thống (.pdf)](./Tài%20liệu%20thiết%20kế%20hệ%20thống.pdf)
 
 ## Hướng dẫn chạy dự án :
    + Khởi động docker desktop trước
