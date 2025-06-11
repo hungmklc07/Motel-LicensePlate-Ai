@@ -1,6 +1,11 @@
 [Liên kết Docker Hub](https://hub.docker.com/u/yonkonika)
 
-Cách Chạy :
+## Mô tả dự án
+
+- [Phân tích đặc tả yêu cầu (.pdf)](./Tài liệu phân tích đặc tả yêu cầu.pdf)
+- [Thiết kế hệ thống (.pdf)](./Tài liệu thiết kế hệ thống.pdf)
+
+## Hướng dẫn chạy dự án :
    + Khởi động docker desktop trước
    + Không cần pull các image dự án đâu ạ
    + Mở terminal trong thư mục Motel-LicensePlate-Ai
@@ -10,7 +15,7 @@ Cách Chạy :
      + tài khoản : admin
      + password : linh2005
 
-Phần trăm đóng góp các thành viên trong nhóm :
+## Tên thành viên và phần trăm đóng góp trong nhóm :
    + Ngô Đình Linh : 34%
    + Đoàn Quang Huy : 24%
    + Hoàng Mạnh Hùng : 24%
