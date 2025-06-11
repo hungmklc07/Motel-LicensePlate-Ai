@@ -163,6 +163,6 @@ CREATE TABLE IF NOT EXISTS cameras (
 -- Thêm dữ liệu mẫu cho cameras
 INSERT INTO cameras (camera_id, name, url, location, building_id, direction, is_active)
 VALUES 
-    ('camera_in', 'Camera Cổng vào', 'http://192.168.53.103:8080/video', 'Cổng vào', 1, 'in', true),
-    ('camera_out', 'Camera Cổng ra', 'http://192.168.53.103:8080/video', 'Cổng ra', 1, 'out', true)
+    ('camera_in', 'Camera Cổng vào', 'http://192.168.53.100:8080/video', 'Cổng vào', 1, 'in', true),
+    ('camera_out', 'Camera Cổng ra', 'http://192.168.53.100:8080/video', 'Cổng ra', 1, 'out', true)
 ON CONFLICT (camera_id) DO NOTHING; 
